@@ -1,3 +1,4 @@
+var path = require('path');
 
 let BUILD_DIR = path.resolve(__dirname, 'www/js');
 let APP_DIR = path.resolve(__dirname, 'src');
@@ -5,17 +6,17 @@ let APP_DIR = path.resolve(__dirname, 'src');
 let config = {
   entry: APP_DIR + '/app.js',
   output: {
+    path: BUILD_DIR,
     filename: 'bundle.js'
   },
   watch: true,
   module: {
     preLoaders: [
-       {
-         test: /\.js$/,
-         exclude: /node_modules/,
-         loader: 'jshint-loader'
-
-       }
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'jshint-loader'
+      }
     ],
     loaders: [
       {
@@ -23,7 +24,7 @@ let config = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
-          presets: ['react', 'es2015']
+          presets: ['es2015']
         }
       }
     ]
@@ -33,4 +34,4 @@ let config = {
   },
 }
 
-export default config;
+module.exports = config;
