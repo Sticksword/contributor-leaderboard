@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm build && node server.js",
+    "start": "node server.js",
     "dev": "./node_modules/.bin/webpack -d --watch",
     "build": "./node_modules/.bin/webpack -p"
   },
   "author": "michael chen",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "jquery": "^3.1.1"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",

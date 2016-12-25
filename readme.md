@@ -4,7 +4,9 @@
 I tried to do a bare bones as possible approach.
 I have documented the tools and process here for convenience and reference.
 Although I used some tooling, I kept everything code-wise to only ES6.
-First run `npm install` and then `npm start`
+First run `npm install` and then `npm start`.
+Alternatively, you can just go to the `www` directory and open `index.html`.
+I think having a server serve the html is cooler :p
 
 #### Tools:
 * webpack
@@ -18,7 +20,7 @@ First run `npm install` and then `npm start`
 #### NPM scripts:
 * `npm install`: first installs express in order to have a server for the html files
 * `npm start`: gets things going, I have prebuilt things already
-* `npm install --dev`: sets up the dev environment and allows for tampering and rebuilding of src code
+* `npm run build`: builds `bundle.js` via webpack
 
 ##### NPM Webpack scripts explanation:
 * webpack for building once for development

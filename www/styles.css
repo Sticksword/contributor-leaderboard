@@ -1,0 +1,11 @@
+.hidden {
+  display: none;
+}
+
+.unhidden {
+  display: block;
+}
+
+.selected {
+  background-color: #32cd32;
+}

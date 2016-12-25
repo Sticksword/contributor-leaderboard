@@ -4,7 +4,7 @@ let BUILD_DIR = path.resolve(__dirname, 'www/js');
 let APP_DIR = path.resolve(__dirname, 'src');
 
 let config = {
-  entry: APP_DIR + '/app.js',
+  entry: APP_DIR + '/PaymentPage.js',
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js'
@@ -13,7 +13,7 @@ let config = {
   module: {
     preLoaders: [
       {
-        test: /\.js$/,
+        test: [/\.js$/, /\.es6$/],
         exclude: /node_modules/,
         loader: 'jshint-loader'
       }
