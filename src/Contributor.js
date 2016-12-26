@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
 
-class Contributor {
+export default class Contributor {
   constructor(options) {
     if (options.name == 'undefined') {
       this.name = 'Anonymous';
@@ -9,6 +9,14 @@ class Contributor {
     }
     this.amount = options.amount;
   }
-}
 
-export default Contributor;
+  static compare(a, b) {
+    if (a.amount < b.amount) {
+      return 1;
+    }
+    if (a.amount > b.amount) {
+      return -1;
+    }
+    return 0;
+  }
+}

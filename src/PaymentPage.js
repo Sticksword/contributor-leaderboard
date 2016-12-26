@@ -6,11 +6,9 @@ import $ from 'jquery';
 // app.js is our container component
 // contributorList and payWhatYouWant are our presentational components
 
-import { populateContributorList } from './contributorList';
+import { renderContributorList } from './contributorList';
 import { selectOption } from './payWhatYouWant';
 import Contributor from './Contributor';
-
-// $("#contributor-list").html("testing");
 
 class PaymentPage {
   constructor(options) {
@@ -19,6 +17,7 @@ class PaymentPage {
     this.selection = null;
     this.amount = null;
     this.name = 'Anonymous';
+    renderContributorList(this.topContributors);
   }
 
 
@@ -28,8 +27,14 @@ class PaymentPage {
         name: this.name,
         amount: this.amount
       }));
+      this.topContributors.sort(Contributor.compare);
+      if (this.topContributors.length > 10) {
+        this.topContributors.pop();
+      }
+      console.log(this.topContributors);
+      renderContributorList(this.topContributors);
     } else {
-      console.log('shouldn\'t be doing anything yet');
+      console.log('either amount is null or amount doesn\'t make the top ten cut');
     }
   }
 }
@@ -40,15 +45,12 @@ topContributors.push(new Contributor({
   amount: 50
 }));
 
-console.log(topContributors);
-
 let paymentPage = new PaymentPage({
   topContributors: topContributors
 });
 
 $('#order-form').submit(function(event) {
   event.preventDefault();
-  console.log('hello');
   paymentPage.submitPayment();
 });
 
@@ -59,16 +61,19 @@ $('.amount-button').click(function(){
   }
   paymentPage.selection = $(this);
   // paymentPage.amount = $(this).html();
-  paymentPage.amount = $(this).val();
+
   if ($(this).html() === 'Custom Amount') {
     $('input[name=custom-amount]').removeClass('hidden');
+    paymentPage.amount = $('input[name=custom-amount]').val();
   } else {
     $('input[name=custom-amount]').addClass('hidden');
+    paymentPage.amount = $(this).val();
   }
   console.log(paymentPage.amount);
 });
 
 $('input[name=custom-amount]').change(function() {
   // console.log($(this));
-  console.log($(this).val());
+  paymentPage.amount = $(this).val().replace(/[^\d.-]/g, '');
+  console.log(paymentPage.amount);
 });
