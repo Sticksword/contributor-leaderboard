@@ -22,7 +22,9 @@ class PaymentPage {
 
 
   submitPayment() {
-    if (this.amount !== null && this.amount > this.minTopTen) {
+    console.log(this.amount);
+    console.log(this.minTopTen);
+    if (this.amount !== null && (paymentPage.topContributors.length < 10 || this.amount > this.minTopTen)) {
       this.topContributors.push(new Contributor({
         name: this.name,
         amount: this.amount
@@ -33,6 +35,14 @@ class PaymentPage {
       }
       console.log(this.topContributors);
       renderContributorList(this.topContributors);
+      $('#top-ten-contributor').addClass('hidden');
+      $('#top-ten-contributor').val('');
+      this.minTopTen = this.topContributors.slice(-1)[0].amount;
+
+      this.selection.toggleClass('selected');
+      this.selection = null;
+      this.name = 'Anonymous';
+      this.amount = null;
     } else {
       console.log('either amount is null or amount doesn\'t make the top ten cut');
     }
@@ -69,6 +79,13 @@ $('.amount-button').click(function(){
     $('input[name=custom-amount]').addClass('hidden');
     paymentPage.amount = $(this).val();
   }
+
+  if (paymentPage.topContributors.length < 10 || paymentPage.amount > paymentPage.minTopTen) {
+    $('#top-ten-contributor').removeClass('hidden');
+  } else {
+    $('#top-ten-contributor').addClass('hidden');
+  }
+
   console.log(paymentPage.amount);
 });
 
@@ -76,4 +93,10 @@ $('input[name=custom-amount]').change(function() {
   // console.log($(this));
   paymentPage.amount = $(this).val().replace(/[^\d.-]/g, '');
   console.log(paymentPage.amount);
+});
+
+$('input[name=top-ten-name]').change(function() {
+  // console.log($(this));
+  paymentPage.name = $(this).val();
+  console.log(paymentPage.name);
 });
