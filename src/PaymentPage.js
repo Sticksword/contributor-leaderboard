@@ -20,10 +20,17 @@ class PaymentPage {
     renderContributorList(this.topContributors);
   }
 
+  resetValues() {
+    this.selection.toggleClass('selected');
+    this.selection = null;
+    this.name = 'Anonymous';
+    this.amount = null;
+    $('input[name=custom-amount]').addClass('hidden');
+    $('input[name=custom-amount]').val('');
+  }
+
 
   submitPayment() {
-    console.log(this.amount);
-    console.log(this.minTopTen);
     if (this.amount !== null && (paymentPage.topContributors.length < 10 || this.amount > this.minTopTen)) {
       this.topContributors.push(new Contributor({
         name: this.name,
@@ -36,13 +43,10 @@ class PaymentPage {
       console.log(this.topContributors);
       renderContributorList(this.topContributors);
       $('#top-ten-contributor').addClass('hidden');
-      $('#top-ten-contributor').val('');
+      $('input[name=top-ten-name]').val('');
       this.minTopTen = this.topContributors.slice(-1)[0].amount;
 
-      this.selection.toggleClass('selected');
-      this.selection = null;
-      this.name = 'Anonymous';
-      this.amount = null;
+      this.resetValues();
     } else {
       console.log('either amount is null or amount doesn\'t make the top ten cut');
     }
@@ -89,6 +93,10 @@ $('.amount-button').click(function(){
   console.log(paymentPage.amount);
 });
 
+$('.no-thanks').click(function(){
+  console.log('no thanks!');
+});
+
 $('input[name=custom-amount]').change(function() {
   // console.log($(this));
   paymentPage.amount = $(this).val().replace(/[^\d.-]/g, '');
@@ -96,7 +104,6 @@ $('input[name=custom-amount]').change(function() {
 });
 
 $('input[name=top-ten-name]').change(function() {
-  // console.log($(this));
   paymentPage.name = $(this).val();
   console.log(paymentPage.name);
 });

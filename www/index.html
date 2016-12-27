@@ -8,25 +8,29 @@
   </head>
   <body>
 
-    <dl id="contributor-list">
+    <div id="content">
+      <dl id="contributor-list"></dl>
 
-    </dl>
+      <form id="order-form">
+        <div id="order-form-radio-amount-selector">
+          <label>Pay What You Want!</label>
+          <button type="button" value=10 class="amount-button">$10</button>
+          <button type="button" value=15 class="amount-button">$15</button>
+          <button type="button" value=20 class="amount-button">$20</button>
+          <button type="button" value=25 class="amount-button">$25</button>
+          <button type="button" value=0 class="amount-button">Custom Amount</button>
+          <input type="text" name="custom-amount" class="custom-amount hidden">
+        </div>
+        <div id="top-ten-contributor" class="hidden">
+          <label>You're a top contributor! Please provide a name for our leaderboard:</label>
+          <input type="text" name="top-ten-name" >
+          <label id="no-thanks" class="no-thanks">No thanks.</label>
+        </div>
+        <button type="submit">Buy Bundle!</button>
+      </form>
 
-    <form id="order-form">
-      <div id="order-form-radio-amount-selector">
-        <label>Pay What You Want!</label>
-        <button type="button" value=10 class="amount-button">$10</button>
-        <button type="button" value=15 class="amount-button">$15</button>
-        <button type="button" value=20 class="amount-button">$20</button>
-        <button type="button" value=25 class="amount-button">$25</button>
-        <button type="button" value=0 class="amount-button">Custom Amount</button>
-        <input type="text" name="custom-amount" class="custom-amount hidden">
-      </div>
-      <div id="top-ten-contributor" class="hidden">
-        <input type="text" name="top-ten-name" >
-      </div>
-      <button type="submit">Buy Bundle!</button>
-    </form>
+      <div id="error-message"></div>
+    </div>
 
     <script src="js/bundle.js"></script>
   </body>
