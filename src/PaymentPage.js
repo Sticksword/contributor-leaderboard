@@ -6,8 +6,7 @@ import $ from 'jquery';
 // app.js is our container component
 // contributorList and payWhatYouWant are our presentational components
 
-import { renderContributorList } from './contributorList';
-import { selectOption } from './payWhatYouWant';
+import * as helpers from './helper_functions';
 import Contributor from './Contributor';
 
 class PaymentPage {
@@ -15,23 +14,66 @@ class PaymentPage {
     this.topContributors = options.topContributors;
     this.minTopTen = 0;
     this.selection = null;
-    this.amount = null;
+    this.amount = 0;
     this.name = 'Anonymous';
-    renderContributorList(this.topContributors);
+    helpers.renderContributorList(this.topContributors);
   }
 
-  resetValues() {
+  /**
+    * @description: returns true if there is space to add another high roller
+    * @return: bool
+  */
+  topTenHasRoom() {
+    return this.topContributors.length < 10;
+  }
+
+  /**
+    * @description: returns true if exceeding top ten capacity of 10
+    * @return: bool
+  */
+  topTenOverflowing() {
+    return this.topContributors.length > 10;
+  }
+
+  /**
+    * @description: returns true if current payment amount makes the top ten high rollers list
+    * @return: bool
+  */
+  amountMakesTopTen() {
+    return this.amount > this.minTopTen;
+  }
+
+  /**
+    * @description: returns true if current payment amount doesn't make the buyer a cheapskate
+    * @return: bool
+  */
+  hasValidAmount() {
+    return this.amount > 0;
+  }
+
+  /**
+    * @description: submits payment for processing (put ajax calls here if there is backend)
+  */
+  resetPayWhatYouWantValues() {
     this.selection.toggleClass('selected');
     this.selection = null;
     this.name = 'Anonymous';
-    this.amount = null;
-    $('input[name=custom-amount]').addClass('hidden');
-    $('input[name=custom-amount]').val('');
+    this.amount = 0;
+    helpers.resetCustomAmountDisplay();
   }
 
+  /**
+    * @description: updates the minimum value needed to make the top ten contributor list
+  */
+  updateMinTopTen() {
+    this.minTopTen = this.topContributors.slice(-1)[0].amount;
+  }
 
+  /**
+    * @description: submits payment for processing (put ajax calls here if there is backend)
+  */
   submitPayment() {
-    if (this.amount !== null && (paymentPage.topContributors.length < 10 || this.amount > this.minTopTen)) {
+    if (this.hasValidAmount() && (this.topTenHasRoom() || this.amountMakesTopTen())) {
       this.topContributors.push(new Contributor({
         name: this.name,
         amount: this.amount
@@ -41,14 +83,13 @@ class PaymentPage {
         this.topContributors.pop();
       }
       console.log(this.topContributors);
-      renderContributorList(this.topContributors);
-      $('#top-ten-contributor').addClass('hidden');
-      $('input[name=top-ten-name]').val('');
-      this.minTopTen = this.topContributors.slice(-1)[0].amount;
+      helpers.renderContributorList(this.topContributors);
+      helpers.resetTopTenContributorDisplay();
 
-      this.resetValues();
+      this.updateMinTopTen();
+      this.resetPayWhatYouWantValues();
     } else {
-      console.log('either amount is null or amount doesn\'t make the top ten cut');
+      console.log('either amount is 0 or amount doesn\'t make the top ten cut');
     }
   }
 }
@@ -74,23 +115,29 @@ $('.amount-button').click(function(){
     paymentPage.selection.toggleClass('selected');
   }
   paymentPage.selection = $(this);
-  // paymentPage.amount = $(this).html();
 
   if ($(this).html() === 'Custom Amount') {
     $('input[name=custom-amount]').removeClass('hidden');
     paymentPage.amount = $('input[name=custom-amount]').val();
+
+    if (paymentPage.amount !== '' && (paymentPage.topContributors.length < 10 || paymentPage.amount > paymentPage.minTopTen)) {
+      $('#top-ten-contributor').removeClass('hidden');
+    } else {
+      $('#top-ten-contributor').addClass('hidden');
+    }
   } else {
     $('input[name=custom-amount]').addClass('hidden');
     paymentPage.amount = $(this).val();
+
+    if (paymentPage.topContributors.length < 10 || paymentPage.amount > paymentPage.minTopTen) {
+      $('#top-ten-contributor').removeClass('hidden');
+    } else {
+      $('#top-ten-contributor').addClass('hidden');
+    }
   }
 
-  if (paymentPage.topContributors.length < 10 || paymentPage.amount > paymentPage.minTopTen) {
-    $('#top-ten-contributor').removeClass('hidden');
-  } else {
-    $('#top-ten-contributor').addClass('hidden');
-  }
 
-  console.log(paymentPage.amount);
+
 });
 
 $('.no-thanks').click(function(){
@@ -98,12 +145,16 @@ $('.no-thanks').click(function(){
 });
 
 $('input[name=custom-amount]').change(function() {
-  // console.log($(this));
+  // regex reference: http://stackoverflow.com/questions/1862130/strip-non-numeric-characters-from-string
   paymentPage.amount = $(this).val().replace(/[^\d.-]/g, '');
-  console.log(paymentPage.amount);
+
+  if (paymentPage.topContributors.length < 10 || paymentPage.amount > paymentPage.minTopTen) {
+    $('#top-ten-contributor').removeClass('hidden');
+  } else {
+    $('#top-ten-contributor').addClass('hidden');
+  }
 });
 
 $('input[name=top-ten-name]').change(function() {
   paymentPage.name = $(this).val();
-  console.log(paymentPage.name);
 });

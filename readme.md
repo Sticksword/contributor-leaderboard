@@ -27,3 +27,6 @@ I think having a server serve the html is cooler :p
 * webpack -p for building once for production (minification)
 * webpack --watch for continuous incremental build in development (fast!)
 * webpack -d to include source maps
+
+#### TODO:
+* implement at least one way binding so that the custom input seems more fluid and real-time

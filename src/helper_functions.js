@@ -13,6 +13,16 @@ export const renderContributorList = (list) => {
   }
 };
 
+export const resetTopTenContributorDisplay = () => {
+  $('#top-ten-contributor').addClass('hidden');
+  $('input[name=top-ten-name]').val('');
+};
+
+export const resetCustomAmountDisplay = () => {
+  $('input[name=custom-amount]').addClass('hidden');
+  $('input[name=custom-amount]').val('');
+};
+
 // <dt>
 //   <span>1.</span>
 //   <span>Example</span>
