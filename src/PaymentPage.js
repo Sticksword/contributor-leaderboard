@@ -116,7 +116,7 @@ $('.amount-button').click(function(){
   }
   paymentPage.selection = $(this);
 
-  if ($(this).html() === 'Custom Amount') {
+  if ($(this).html() === 'Custom Amount') { // clean this abomination
     $('input[name=custom-amount]').removeClass('hidden');
     paymentPage.amount = $('input[name=custom-amount]').val();
 
@@ -137,7 +137,6 @@ $('.amount-button').click(function(){
   }
 
 
-
 });
 
 $('.no-thanks').click(function(){
@@ -146,13 +145,16 @@ $('.no-thanks').click(function(){
 
 $('input[name=custom-amount]').change(function() {
   // regex reference: http://stackoverflow.com/questions/1862130/strip-non-numeric-characters-from-string
-  paymentPage.amount = $(this).val().replace(/[^\d.-]/g, '');
+  paymentPage.amount = $(this).val().replace(/[^\d.]/g, '');
+  // paymentPage.amount = $(this).val().replace(/[^\d*\.?\d*]/g, '');
+  $('input[name=custom-amount]').val(paymentPage.amount);
 
   if (paymentPage.topContributors.length < 10 || paymentPage.amount > paymentPage.minTopTen) {
     $('#top-ten-contributor').removeClass('hidden');
   } else {
     $('#top-ten-contributor').addClass('hidden');
   }
+  console.log(paymentPage.amount);
 });
 
 $('input[name=top-ten-name]').change(function() {

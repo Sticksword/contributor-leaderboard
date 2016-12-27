@@ -1,12 +1,16 @@
 
-### Setup and explanation:
+## Setup and explanation:
 
-I tried to do a bare bones as possible approach.
-I have documented the tools and process here for convenience and reference.
-Although I used some tooling, I kept everything code-wise to only ES6.
-First run `npm install` and then `npm start`.
-Alternatively, you can just go to the `www` directory and open `index.html`.
+* I tried to do a bare bones as possible approach.
+* I have documented the tools and process here for convenience and reference.
+* Although I used some tooling, I kept everything code-wise to only ES6.
+* * First run `npm install` and then `npm start`.
+* * Alternatively, you can just go to the `www` directory and open `index.html`.
 I think having a server serve the html is cooler :p
+
+### Some explanation on custom amount behavior:
+* all negative values are converted into positive values (c'mon we ain't paying you to get awesome games)
+* all non-numeric values are removed when focus is removed from custom amount input (you're not paying "abc" dollars)
 
 #### Tools:
 * webpack
@@ -30,3 +34,4 @@ I think having a server serve the html is cooler :p
 
 #### TODO:
 * implement at least one way binding so that the custom input seems more fluid and real-time
+* provide error message against input with multiple dots eg. 100..1 or 100.1.1
