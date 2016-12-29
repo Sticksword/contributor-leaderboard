@@ -4,7 +4,7 @@ let BUILD_DIR = path.resolve(__dirname, 'www/js');
 let APP_DIR = path.resolve(__dirname, 'src');
 
 let config = {
-  entry: APP_DIR + '/PaymentPage.js',
+  entry: APP_DIR + '/App.js',
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js'

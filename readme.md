@@ -34,5 +34,5 @@ I think having a server serve the html is cooler :p
 
 #### TODO:
 * implement at least one way binding so that the custom input seems more fluid and real-time
-* provide error message against input with multiple dots eg. 100..1 or 100.1.1
 * prevent anything further than 2 decimal places
+* sorting is not deterministic -> need to implement inhouse sort rather than use default sort + custom compare function

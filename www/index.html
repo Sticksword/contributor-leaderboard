@@ -9,7 +9,10 @@
   <body>
 
     <div id="content">
+      <h4>Top Contributors<h4>
       <dl id="contributor-list"></dl>
+
+      <br />
 
       <form id="order-form">
         <div id="order-form-radio-amount-selector">
@@ -19,17 +22,16 @@
           <button type="button" value=20 class="amount-button">$20</button>
           <button type="button" value=25 class="amount-button">$25</button>
           <button type="button" value=0 class="amount-button">Custom Amount</button>
-          <input type="text" name="custom-amount" class="custom-amount hidden">
+          <input type="text" value=25 class="hidden" name="custom-amount">
         </div>
-        <div id="top-ten-contributor" class="hidden">
+        <div id="you-are-top-ten-contributor" class="hidden">
           <label>You're a top contributor! Please provide a name for our leaderboard:</label>
-          <input type="text" name="top-ten-name" >
-          <label id="no-thanks" class="no-thanks">No thanks.</label>
+          <input type="text" name="top-ten-name" placeholder="Anonymous" >
+          <label class="no-thanks">No thanks.</label>
         </div>
         <button type="submit">Buy Bundle!</button>
       </form>
 
-      <div id="error-message"></div>
     </div>
 
     <script src="js/bundle.js"></script>

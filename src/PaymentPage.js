@@ -1,11 +1,6 @@
 /* jshint esversion: 6 */
 
 import $ from 'jquery';
-
-// borrow from React and Redux paradigm
-// app.js is our container component
-// contributorList and payWhatYouWant are our presentational components
-
 import * as helpers from './helper_functions';
 import Contributor from './Contributor';
 
@@ -16,7 +11,7 @@ class PaymentPage {
     this.selection = null;
     this.amount = 0;
     this.name = 'Anonymous';
-    helpers.renderContributorList(this.topContributors);
+    this.renderContributorList();
   }
 
   /**
@@ -43,6 +38,22 @@ class PaymentPage {
     return this.amount > this.minTopTen;
   }
 
+  checkTopTenContributorDisplay() {
+    if (this.isTopTen()) {
+      $('#you-are-top-ten-contributor').removeClass('hidden');
+    } else {
+      $('#you-are-top-ten-contributor').addClass('hidden');
+    }
+  }
+
+  /**
+    * @description: returns true if current payment can be considered a top ten payment
+    * @return: bool
+  */
+  isTopTen() {
+    return (this.topTenHasRoom() || this.amountMakesTopTen());
+  }
+
   /**
     * @description: returns true if current payment amount doesn't make the buyer a cheapskate
     * @return: bool
@@ -62,6 +73,11 @@ class PaymentPage {
     helpers.resetCustomAmountDisplay();
   }
 
+  renderContributorList() {
+    helpers.renderContributorList(this.topContributors);
+    helpers.resetTopTenContributorDisplay();
+  }
+
   /**
     * @description: updates the minimum value needed to make the top ten contributor list
   */
@@ -73,7 +89,11 @@ class PaymentPage {
     * @description: submits payment for processing (put ajax calls here if there is backend)
   */
   submitPayment() {
-    if (this.hasValidAmount() && (this.topTenHasRoom() || this.amountMakesTopTen())) {
+    if (!this.hasValidAmount()) {
+      alert('Oh no! Something went wrong. Maybe you entered an invalid amount.');
+      return;
+    }
+    if (this.isTopTen()) {
       this.topContributors.push(new Contributor({
         name: this.name,
         amount: this.amount
@@ -83,80 +103,13 @@ class PaymentPage {
         this.topContributors.pop();
       }
       console.log(this.topContributors);
-      helpers.renderContributorList(this.topContributors);
-      helpers.resetTopTenContributorDisplay();
 
+      this.renderContributorList();
       this.updateMinTopTen();
       this.resetPayWhatYouWantValues();
-    } else {
-      console.log('either amount is 0 or amount doesn\'t make the top ten cut');
     }
   }
+
 }
 
-let topContributors = [];
-topContributors.push(new Contributor({
-  name: 'Michael',
-  amount: 50
-}));
-
-let paymentPage = new PaymentPage({
-  topContributors: topContributors
-});
-
-$('#order-form').submit(function(event) {
-  event.preventDefault();
-  paymentPage.submitPayment();
-});
-
-$('.amount-button').click(function(){
-  $(this).toggleClass('selected');
-  if (paymentPage.selection !== null) {
-    paymentPage.selection.toggleClass('selected');
-  }
-  paymentPage.selection = $(this);
-
-  if ($(this).html() === 'Custom Amount') { // clean this abomination
-    $('input[name=custom-amount]').removeClass('hidden');
-    paymentPage.amount = $('input[name=custom-amount]').val();
-
-    if (paymentPage.amount !== '' && (paymentPage.topContributors.length < 10 || paymentPage.amount > paymentPage.minTopTen)) {
-      $('#top-ten-contributor').removeClass('hidden');
-    } else {
-      $('#top-ten-contributor').addClass('hidden');
-    }
-  } else {
-    $('input[name=custom-amount]').addClass('hidden');
-    paymentPage.amount = $(this).val();
-
-    if (paymentPage.topContributors.length < 10 || paymentPage.amount > paymentPage.minTopTen) {
-      $('#top-ten-contributor').removeClass('hidden');
-    } else {
-      $('#top-ten-contributor').addClass('hidden');
-    }
-  }
-
-
-});
-
-$('.no-thanks').click(function(){
-  console.log('no thanks!');
-});
-
-$('input[name=custom-amount]').change(function() {
-  // regex reference: http://stackoverflow.com/questions/1862130/strip-non-numeric-characters-from-string
-  paymentPage.amount = $(this).val().replace(/[^\d.]/g, '');
-  // paymentPage.amount = $(this).val().replace(/[^\d*\.?\d*]/g, '');
-  $('input[name=custom-amount]').val(paymentPage.amount);
-
-  if (paymentPage.topContributors.length < 10 || paymentPage.amount > paymentPage.minTopTen) {
-    $('#top-ten-contributor').removeClass('hidden');
-  } else {
-    $('#top-ten-contributor').addClass('hidden');
-  }
-  console.log(paymentPage.amount);
-});
-
-$('input[name=top-ten-name]').change(function() {
-  paymentPage.name = $(this).val();
-});
+export default PaymentPage;

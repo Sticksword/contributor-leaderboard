@@ -38,6 +38,7 @@ dd {
 button {
   background-color: #A9A9A9;
   cursor: pointer;
+  border-radius: 10px;
 }
 
 body {
