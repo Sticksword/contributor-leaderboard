@@ -120,7 +120,7 @@ class PaymentPage {
   }
 
   setAmount(amount) {
-    this.amount = parseFloat(amount).toFixed(2);
+    this.amount = parseFloat(amount);
   }
 
 }

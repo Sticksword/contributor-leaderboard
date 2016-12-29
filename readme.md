@@ -11,6 +11,7 @@ I think having a server serve the html is cooler :p
 ### Some explanation on custom amount behavior:
 * all negative values are converted into positive values (c'mon we ain't paying you to get awesome games)
 * all non-numeric values are removed when focus is removed from custom amount input (you're not paying "abc" dollars)
+* extra decimals are truncated eg. 1.1.1 becomes 1.1
 
 #### Tools:
 * webpack
@@ -24,7 +25,7 @@ I think having a server serve the html is cooler :p
 #### NPM scripts:
 * `npm install`: first installs express in order to have a server for the html files
 * `npm start`: gets things going, I have prebuilt things already
-* `npm run build`: builds `bundle.js` via webpack
+* `npm run build`: builds `bundle.js` and `bundle.js.map` via webpack
 
 ##### NPM Webpack scripts explanation:
 * webpack for building once for development
@@ -34,5 +35,4 @@ I think having a server serve the html is cooler :p
 
 #### TODO:
 * implement at least one way binding so that the custom input seems more fluid and real-time
-* prevent anything further than 2 decimal places
-* sorting is not deterministic -> need to implement inhouse sort rather than use default sort + custom compare function
+* sorting is not deterministic -> need to implement inhouse sort (actually not even sort, just insert into a sorted array) rather than use default sort + custom compare function
