@@ -3,9 +3,10 @@
 import $ from 'jquery';
 
 // borrow from React and Redux paradigm or separating state/logic from presentation
-// App.js sets up the page logic/events
-// PaymentPage.js sets up and manages the state
-// helper_functions.js helps render and present things
+// since no React to help us, we separated state from logic as well
+// App.js sets up the page logic/events, uses jquery
+// PaymentPage.js sets up and manages the state, no jquery, all abstracted away
+// helper_functions.js helps render and present things, uses jquery
 
 import PaymentPage from './PaymentPage';
 
@@ -18,36 +19,35 @@ $('#order-form').submit(function(event) {
   paymentPage.submitPayment();
 });
 
-$('.amount-button').click(function(){
+$('.amount-button').click(function() {
   $(this).toggleClass('selected');
   if (paymentPage.selection !== null) {
     paymentPage.selection.toggleClass('selected');
   }
   paymentPage.selection = $(this);
 
-  if ($(this).html() === 'Custom Amount') { // clean this abomination
+  if ($(this).html() === 'Custom Amount') {
     $('input[name=custom-amount]').removeClass('hidden');
-    paymentPage.amount = $('input[name=custom-amount]').val();
+    paymentPage.setAmount($('input[name=custom-amount]').val());
   } else {
     $('input[name=custom-amount]').addClass('hidden');
-    paymentPage.amount = $(this).val();
+    paymentPage.setAmount($(this).val());
   }
   paymentPage.checkTopTenContributorDisplay();
 
-
 });
 
-$('.no-thanks').click(function(){
-  console.log('no thanks!');
+$('.no-thanks').click(function() {
+  paymentPage.noThanks = true;
+  paymentPage.checkTopTenContributorDisplay();
 });
 
 $('input[name=custom-amount]').change(function() {
   // regex reference: http://stackoverflow.com/questions/1862130/strip-non-numeric-characters-from-string
-  paymentPage.amount = $(this).val().replace(/[^\d.]/g, ''); // replace globally via `/g` anything that is not a digit or .
+  paymentPage.setAmount($(this).val().replace(/[^\d.]/g, '')); // replace globally via `/g` anything that is not a digit or .
   $('input[name=custom-amount]').val(paymentPage.amount);
 
   paymentPage.checkTopTenContributorDisplay();
-  console.log(paymentPage.amount);
 });
 
 $('input[name=top-ten-name]').change(function() {

@@ -49,15 +49,22 @@ const buildName = (dtElement, name) => {
       }
     }
   } // repeat until end of string
-
 };
 
 /**
   * @description: resets "you're a top contributor" display
 */
 export const resetTopTenContributorDisplay = () => {
-  $('#you-are-top-ten-contributor').addClass('hidden');
+  hideYouAreTopTenDisplay();
   $('input[name=top-ten-name]').val('');
+};
+
+export const showYouAreTopTenDisplay = () => {
+  $('#you-are-top-ten-contributor').removeClass('hidden');
+};
+
+export const hideYouAreTopTenDisplay = () => {
+  $('#you-are-top-ten-contributor').addClass('hidden');
 };
 
 /**

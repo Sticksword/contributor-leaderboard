@@ -1,16 +1,21 @@
 /* jshint esversion: 6 */
 
-import $ from 'jquery';
 import * as helpers from './helper_functions';
 import Contributor from './Contributor';
 
 class PaymentPage {
+
+  /**
+    * @description: loads up the Payment Page, can add a library here to load data
+    * @param options: takes in JS object that has 1 array field, topContributors
+  */
   constructor(options) {
     this.topContributors = options.topContributors;
     this.minTopTen = 0;
     this.selection = null;
     this.amount = 0;
     this.name = 'Anonymous';
+    this.noThanks = false;
     this.renderContributorList();
   }
 
@@ -38,11 +43,14 @@ class PaymentPage {
     return this.amount > this.minTopTen;
   }
 
+  /**
+    * @description: logic for toggling the "you are a top ten contributor!" display
+  */
   checkTopTenContributorDisplay() {
-    if (this.isTopTen()) {
-      $('#you-are-top-ten-contributor').removeClass('hidden');
+    if (this.isTopTen() && !this.noThanks) {
+      helpers.showYouAreTopTenDisplay();
     } else {
-      $('#you-are-top-ten-contributor').addClass('hidden');
+      helpers.hideYouAreTopTenDisplay();
     }
   }
 
@@ -63,22 +71,6 @@ class PaymentPage {
   }
 
   /**
-    * @description: submits payment for processing (put ajax calls here if there is backend)
-  */
-  resetPayWhatYouWantValues() {
-    this.selection.toggleClass('selected');
-    this.selection = null;
-    this.name = 'Anonymous';
-    this.amount = 0;
-    helpers.resetCustomAmountDisplay();
-  }
-
-  renderContributorList() {
-    helpers.renderContributorList(this.topContributors);
-    helpers.resetTopTenContributorDisplay();
-  }
-
-  /**
     * @description: updates the minimum value needed to make the top ten contributor list
   */
   updateMinTopTen() {
@@ -88,9 +80,26 @@ class PaymentPage {
   /**
     * @description: submits payment for processing (put ajax calls here if there is backend)
   */
+  resetPayWhatYouWantValues() {
+    this.selection.toggleClass('selected');
+    this.selection = null;
+    this.name = 'Anonymous';
+    this.amount = 0;
+    this.noThanks = false;
+    helpers.resetCustomAmountDisplay();
+  }
+
+  renderContributorList() {
+    helpers.renderContributorList(this.topContributors);
+    helpers.resetTopTenContributorDisplay();
+  }
+
+  /**
+    * @description: submits payment for processing (put ajax calls here if there is backend)
+  */
   submitPayment() {
     if (!this.hasValidAmount()) {
-      alert('Oh no! Something went wrong. Maybe you entered an invalid amount.');
+      alert('Oh no! Please check the amount and try again.');
       return;
     }
     if (this.isTopTen()) {
@@ -108,6 +117,10 @@ class PaymentPage {
       this.updateMinTopTen();
       this.resetPayWhatYouWantValues();
     }
+  }
+
+  setAmount(amount) {
+    this.amount = parseFloat(amount).toFixed(2);
   }
 
 }
