@@ -1,9 +1,12 @@
 /* jshint esversion: 6 */
 
+import * as displays from './display_functions';
 import * as helpers from './helper_functions';
 import Contributor from './Contributor';
 
 class PaymentPage {
+  // Note: for this project, I opted not to make variables private because there is no need for it in such a small project
+  // If chosen to do so, I would have probably used closures and underscore prefixes
 
   /**
     * @description: loads up the Payment Page, can add a library here to load data
@@ -48,9 +51,9 @@ class PaymentPage {
   */
   checkTopTenContributorDisplay() {
     if (this.isTopTen() && !this.noThanks) {
-      helpers.showYouAreTopTenDisplay();
+      displays.showYouAreTopTenDisplay();
     } else {
-      helpers.hideYouAreTopTenDisplay();
+      displays.hideYouAreTopTenDisplay();
     }
   }
 
@@ -67,7 +70,7 @@ class PaymentPage {
     * @return: bool
   */
   hasValidAmount() {
-    return this.amount > 0;
+    return this.amount > 0.01;
   }
 
   /**
@@ -86,16 +89,20 @@ class PaymentPage {
     this.name = 'Anonymous';
     this.amount = 0;
     this.noThanks = false;
-    helpers.resetCustomAmountDisplay();
-  }
-
-  renderContributorList() {
-    helpers.renderContributorList(this.topContributors);
-    helpers.resetTopTenContributorDisplay();
+    displays.resetCustomAmountDisplay();
   }
 
   /**
-    * @description: submits payment for processing (put ajax calls here if there is backend)
+    * @description: renders the top contributors to DOM and resets the "you-are-top-ten-contributor" display
+  */
+  renderContributorList() {
+    displays.renderContributorList(this.topContributors);
+    displays.resetTopTenContributorDisplay();
+  }
+
+  /**
+    * @description: submits payment for processing, put ajax calls here if there is backend
+    (I feel this function can belong here or in App.js, I chose here because it semantically makes sense)
   */
   submitPayment() {
     if (!this.hasValidAmount()) {
@@ -103,15 +110,13 @@ class PaymentPage {
       return;
     }
     if (this.isTopTen()) {
-      this.topContributors.push(new Contributor({
+      helpers.addOneInsertionSort(this.topContributors, new Contributor({
         name: this.name,
         amount: this.amount
       }));
-      this.topContributors.sort(Contributor.compare);
-      if (this.topContributors.length > 10) {
+      if (this.topTenOverflowing()) {
         this.topContributors.pop();
       }
-      console.log(this.topContributors);
 
       this.renderContributorList();
       this.updateMinTopTen();
@@ -119,6 +124,9 @@ class PaymentPage {
     }
   }
 
+  /**
+    * @description: the only setter we are implementing that isn't trivial (when everything is public) because we need to have parsing logic
+  */
   setAmount(amount) {
     this.amount = parseFloat(amount);
   }

@@ -35,4 +35,3 @@ I think having a server serve the html is cooler :p
 
 #### TODO:
 * implement at least one way binding so that the custom input seems more fluid and real-time
-* sorting is not deterministic -> need to implement inhouse sort (actually not even sort, just insert into a sorted array) rather than use default sort + custom compare function

@@ -29,14 +29,11 @@ $('.amount-button').click(function() {
   if ($(this).html() === 'Custom Amount') {
     $('input[name=custom-amount]').removeClass('hidden');
     paymentPage.setAmount($('input[name=custom-amount]').val());
-    console.log(typeof paymentPage.amount);
   } else {
     $('input[name=custom-amount]').addClass('hidden');
     paymentPage.setAmount($(this).val());
-    console.log(typeof paymentPage.amount);
   }
   paymentPage.checkTopTenContributorDisplay();
-
 });
 
 $('.no-thanks').click(function() {
@@ -48,10 +45,7 @@ $('input[name=custom-amount]').change(function() {
   // regex reference: http://stackoverflow.com/questions/1862130/strip-non-numeric-characters-from-string
   paymentPage.setAmount($(this).val().replace(/[^\d.]/g, '')); // replace globally via `/g` anything that is not a digit or .
   $('input[name=custom-amount]').val(paymentPage.amount);
-  console.log(typeof paymentPage.amount);
-
   paymentPage.checkTopTenContributorDisplay();
-  console.log(paymentPage.amount);
 });
 
 $('input[name=top-ten-name]').change(function() {
