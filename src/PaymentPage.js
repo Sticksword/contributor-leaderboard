@@ -15,11 +15,8 @@ class PaymentPage {
   constructor(options) {
     this.topContributors = options.topContributors;
     this.minTopTen = 0;
-    this.selection = null;
-    this.amount = 0;
-    this.name = 'Anonymous';
-    this.noThanks = false;
-    this.renderContributorList();
+    this.resetPayWhatYouWantValues();
+    this.renderContributorList(); // technically not needed b/c list is empty, only useful if we initialize with users from external data source
   }
 
   /**
@@ -84,12 +81,13 @@ class PaymentPage {
     * @description: submits payment for processing (put ajax calls here if there is backend)
   */
   resetPayWhatYouWantValues() {
-    this.selection.toggleClass('selected');
+    if (typeof this.selection !== 'undefined') {
+      this.selection.toggleClass('selected');
+    }
     this.selection = null;
     this.name = 'Anonymous';
     this.amount = 0;
     this.noThanks = false;
-    displays.resetCustomAmountDisplay();
   }
 
   /**
@@ -121,6 +119,7 @@ class PaymentPage {
       this.renderContributorList();
       this.updateMinTopTen();
       this.resetPayWhatYouWantValues();
+      displays.resetCustomAmountDisplay();
     }
   }
 
