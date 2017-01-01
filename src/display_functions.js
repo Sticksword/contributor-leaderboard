@@ -6,6 +6,9 @@ const baseUrl = 'https://www.twitter.com/';
 
 /**
   * @description: renders the contributor list to the dom, also handles the Twitter @mentions
+  (Rather than pick and choose DOM elements to erase, I chose the simpler method of simply re-rendering.
+  I don't think there is array.splice and array.pop for DOM elements.
+  In theory, can mimic React in their maintainence of a virtual DOM tree and doing a diff comparison when re-rendering but that's for another day.)
   * @param list: array of Contributor objects
 */
 export const renderContributorList = (list) => {
@@ -59,10 +62,16 @@ export const resetTopTenContributorDisplay = () => {
   $('input[name=top-ten-name]').val('');
 };
 
+/**
+  * @description: show "you're a top contributor" display
+*/
 export const showYouAreTopTenDisplay = () => {
   $('#you-are-top-ten-contributor').removeClass('hidden');
 };
 
+/**
+  * @description: hide "you're a top contributor" display
+*/
 export const hideYouAreTopTenDisplay = () => {
   $('#you-are-top-ten-contributor').addClass('hidden');
 };
