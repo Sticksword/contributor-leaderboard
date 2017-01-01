@@ -127,8 +127,10 @@ class PaymentPage {
     * @description: the only setter we are implementing that isn't trivial (when everything is public) because we need to have parsing logic
   */
   setAmount(amount) {
-    this.amount = parseFloat(amount);
+    this.amount = Math.round(parseFloat(amount) * 100) / 100; // keep it to 2 decimals
   }
+  // Note: there is bug here where 25.00499999999999999 rounds to 25.01 due to some weird floating point error, not sure how to fix yet
+  // See more: http://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places
 
 }
 

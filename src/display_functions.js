@@ -18,7 +18,7 @@ export const renderContributorList = (list) => {
     $contributorDT.append($('<span>').html(i + 1 + '. '));
     buildName($contributorDT, list[i].name);
     $('#contributor-list').append($contributorDT);
-    $('#contributor-list').append($('<dd>').html('$' + list[i].amount.toFixed(2))); // I choose to round here for display purposes
+    $('#contributor-list').append($('<dd>').html('$' + list[i].amount.toFixed(2))); // display down to the penny
   }
 };
 
