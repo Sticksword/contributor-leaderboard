@@ -60,7 +60,7 @@ $('input[name=custom-amount]').change(function() {
   // regex reference: http://stackoverflow.com/questions/1862130/strip-non-numeric-characters-from-string
   let amount = $(this).val().replace(/[^\d.]/g, ''); // replace globally via `/g` anything that is not a digit or .
   paymentPage.setAmount(amount);
-  $('input[name=custom-amount]').val(amount); // set for later use when Custom Amount button is clicked
+  $('input[name=custom-amount]').val(paymentPage.amount); // set for later use when Custom Amount button is clicked, use paymentPage.amount because it's rounded to 2 decimals
 
   if (amount === '') {
     alert('Please input a numeric amount!'); // don't need to do anything else, empty strings are handled via comparison in submitPayment method
