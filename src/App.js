@@ -58,9 +58,15 @@ $('.no-thanks').click(function() {
 */
 $('input[name=custom-amount]').change(function() {
   // regex reference: http://stackoverflow.com/questions/1862130/strip-non-numeric-characters-from-string
-  paymentPage.setAmount($(this).val().replace(/[^\d.]/g, '')); // replace globally via `/g` anything that is not a digit or .
-  $('input[name=custom-amount]').val(paymentPage.amount);
-  paymentPage.checkTopTenContributorDisplay();
+  let amount = $(this).val().replace(/[^\d.]/g, ''); // replace globally via `/g` anything that is not a digit or .
+  paymentPage.setAmount(amount);
+  $('input[name=custom-amount]').val(amount); // set for later use when Custom Amount button is clicked
+
+  if (amount === '') {
+    alert('Please input a numeric amount!'); // don't need to do anything else, empty strings are handled via comparison in submitPayment method
+  } else {
+    paymentPage.checkTopTenContributorDisplay();
+  }
 });
 
 /**

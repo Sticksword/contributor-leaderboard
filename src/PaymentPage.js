@@ -67,7 +67,7 @@ class PaymentPage {
     * @return: bool
   */
   hasValidAmount() {
-    return this.amount > 0.01;
+    return this.amount > 0.01; // note: empty string is converted to NaN and NaN is not > 0.01
   }
 
   /**
